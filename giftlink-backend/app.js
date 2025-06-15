@@ -1,57 +1,57 @@
-/*jshint esversion: 8 */
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const pinoLogger = require('./logger');
-
-const connectToDatabase = require('./models/db');
-const {loadData} = require("./util/import-mongo/index");
-
+import express from "express";
+import userRoutes from "./routes/user.routes.js";
+import cors from "cors";
+import helmet from "helmet";
+import morgan from "morgan";
+import { errorHandler, NotFoundError } from "./middlewares/errorHandler.js";
+import logger from "./utils/logger.js";
+import config from "./config/config.js";
 
 const app = express();
-app.use("*",cors());
-const port = 3060;
+const { nodeEnv, frontendUrl } = config;
+// region 🛡️ Middleware
+// Enable CORS
+app.use(
+  cors({
+    origin: frontendUrl || "http://localhost:3000",
+    credentials: true,
+  })
+);
+app.use(
+  helmet({
+    crossOriginResourcePolicy: false, // Allow cross-origin resource sharing
+  })
+); // Use Helmet for security headers
+app.use(express.json()); // Middleware to parse JSON requests
+app.use(express.urlencoded({ extended: true })); // Middleware to parse URL-encoded data
+// Middleware for logging HTTP requests
+if (nodeEnv === "development") {
+  app.use(morgan("dev")); // Use 'dev' format for development
+} else {
+  app.use(
+    morgan("combined", {
+      stream: { write: (message) => logger.info(message.trim()) },
+    })
+  ); // Use 'combined' format for production
+}
+// endregion
 
-// Connect to MongoDB; we just do this one time
-connectToDatabase().then(() => {
-    pinoLogger.info('Connected to DB');
-})
-    .catch((e) => console.error('Failed to connect to DB', e));
+// region 📂 Routes
+app.use("/users", userRoutes); // Import user routes
+// Basic route
+app.get("/", (req, res) => {
+  logger.info("Root route accessed");
+  res.json({ message: "Welcome to the backend template!" });
+});
+// endregion
 
-
-app.use(express.json());
-
-// Route files
-// Gift API Task 1: import the giftRoutes and store in a constant called giftroutes
-//{{insert code here}}
-
-// Search API Task 1: import the searchRoutes and store in a constant called searchRoutes
-//{{insert code here}}
-
-
-const pinoHttp = require('pino-http');
-const logger = require('./logger');
-
-app.use(pinoHttp({ logger }));
-
-// Use Routes
-// Gift API Task 2: add the giftRoutes to the server by using the app.use() method.
-//{{insert code here}}
-
-// Search API Task 2: add the searchRoutes to the server by using the app.use() method.
-//{{insert code here}}
-
-
-// Global Error Handler
-app.use((err, req, res, next) => {
-    console.error(err);
-    res.status(500).send('Internal Server Error');
+// 404 handler
+app.use((req, res, next) => {
+  logger.warn(`404 Not Found: ${req.originalUrl}`);
+  next(new NotFoundError("Resource not found"));
 });
 
-app.get("/",(req,res)=>{
-    res.send("Inside the server")
-})
+// Centralized error handler
+app.use(errorHandler);
 
-app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
-});
+export default app;
