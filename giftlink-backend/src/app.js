@@ -1,5 +1,7 @@
 import express from "express";
 import userRoutes from "./routes/user.routes.js";
+import giftRoutes from "./routes/gift.routes.js";
+import searchRoutes from "./routes/search.routes.js";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
@@ -8,6 +10,8 @@ import logger from "./utils/logger.js";
 import config from "./config/config.js";
 
 const app = express();
+const apiRouter = express.Router();
+
 const { nodeEnv, frontendUrl } = config;
 // region 🛡️ Middleware
 // Enable CORS
@@ -23,6 +27,7 @@ app.use(
   })
 ); // Use Helmet for security headers
 app.use(express.json()); // Middleware to parse JSON requests
+
 app.use(express.urlencoded({ extended: true })); // Middleware to parse URL-encoded data
 // Middleware for logging HTTP requests
 if (nodeEnv === "development") {
@@ -37,7 +42,11 @@ if (nodeEnv === "development") {
 // endregion
 
 // region 📂 Routes
-app.use("/users", userRoutes); // Import user routes
+apiRouter.use("/users", userRoutes); // Import user routes
+apiRouter.use("/gifts", giftRoutes); // Import gift routes
+apiRouter.use("/search", searchRoutes); // Import search routes
+
+app.use("/api", apiRouter);
 // Basic route
 app.get("/", (req, res) => {
   logger.info("Root route accessed");

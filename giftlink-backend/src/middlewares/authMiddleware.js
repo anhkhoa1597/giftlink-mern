@@ -1,5 +1,5 @@
 import logger from "../utils/logger.js";
-import { UnauthorizedError } from "../middlewares/errorHandler.js";
+import { UnauthorizedError } from "./errorHandler.js";
 import { verifyToken } from "../utils/tokenUtils.js";
 
 export const authenticateToken = (req, res, next) => {
