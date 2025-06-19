@@ -9,6 +9,7 @@ body {
   overflow: hidden;
   background-color: #f4f4f4; /* Updated background color */
 }
+
 /* Create a pseudo-element for the background and blur */
 body::before {
   content: "";
