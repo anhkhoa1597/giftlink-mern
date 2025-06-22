@@ -17,7 +17,7 @@ const { nodeEnv, frontendUrl } = config;
 // Enable CORS
 app.use(
   cors({
-    origin: frontendUrl || "http://localhost:3000",
+    origin: frontendUrl || "http://localhost:5173",
     credentials: true,
   })
 );

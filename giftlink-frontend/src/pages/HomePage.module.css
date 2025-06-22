@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
+
 .container {
   font-family: "Montserrat", sans-serif;
   margin: 0;
@@ -55,7 +57,7 @@
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
-.btn-primary {
+.btn {
   background-color: #1e90ff; /* Vibrant color for the button */
   color: #ffffff; /* White text for contrast */
   border: none;
@@ -66,19 +68,22 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
   transition: background-color 0.3s, transform 0.1s;
 }
-.btn-primary:hover,
-.btn-primary:focus {
+.btn:hover,
+.btn:focus {
   background-color: #f50057; /* A lighter shade for interaction feedback */
   transform: scale(1.05); /* Slightly enlarge button on hover/focus */
 }
+
 @media (max-width: 768px) {
-  h1 {
-    font-size: 3rem; /* Smaller font size for headings on mobile */
+  .content h1 {
+    font-size: 3rem;
   }
-  h2 {
-    font-size: 2.5rem; /* Smaller font size for subheadings on mobile */
+
+  .content h2 {
+    font-size: 2.5rem;
   }
+
   .lead {
-    font-size: 1.25rem; /* Smaller font size for text on mobile */
+    font-size: 1.25rem;
   }
 }
