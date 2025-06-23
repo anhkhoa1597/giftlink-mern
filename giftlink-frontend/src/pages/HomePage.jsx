@@ -1,4 +1,5 @@
 import styles from "./HomePage.module.css";
+import { Link } from "react-router-dom";
 
 const HomePage = () => {
   return (
@@ -10,9 +11,9 @@ const HomePage = () => {
           "Sharing is the essence of community. It is through giving that we
           enrich and perpetuate both our lives and the lives of others."
         </p>
-        <a href="/main" className={styles.btn}>
+        <Link to="/main" className={styles.btn}>
           Get Started
-        </a>
+        </Link>
       </div>
     </div>
   );
