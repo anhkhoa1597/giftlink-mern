@@ -131,7 +131,8 @@ export const loginUser = async (req, res, next) => {
 // Logout
 export const logoutUser = async (req, res, next) => {
   try {
-    res.json({ message: "Logout successful" });
+    logger.info(`User ${req.user.email} Logout successful`);
+    res.json({ message: "User Logout successful" });
   } catch (error) {
     next(error);
   }
