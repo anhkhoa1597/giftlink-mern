@@ -17,7 +17,7 @@ const LoginPage = () => {
 
   const location = useLocation();
   const navigate = useNavigate();
-  const from = location.state?.from?.pathname || "/";
+  const from = location.state?.from?.pathname || "/main";
 
   const handleLogin = async (e) => {
     e.preventDefault();

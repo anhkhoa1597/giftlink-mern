@@ -1,10 +1,22 @@
 import styles from "./Navbar.module.css";
 import { Link, useLocation } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../features/auth/authSlice";
 
 const Navbar = () => {
   const location = useLocation();
   const currentPath = location.pathname;
+  const { user, token } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
+  const handleLogout = (e) => {
+    const confirmed = window.confirm("Are you sure you want to log out?");
+    if (confirmed) {
+      dispatch(logout());
+    } else {
+      e.preventDefault(); // 🔥 chặn Link chuyển trang
+    }
+  };
   return (
     <nav className={styles.nav}>
       <div className={styles.logo}>
@@ -35,14 +47,25 @@ const Navbar = () => {
         >
           Search
         </Link>
-        <Link
-          to="/login"
-          className={`${styles.link} ${
-            currentPath.startsWith("/login") ? styles.active : ""
-          }`}
-        >
-          Login
-        </Link>
+        {user ? (
+          <Link
+            to="/login"
+            className={`${styles.link}`}
+            onClick={(e) => handleLogout(e)}
+          >
+            Logout
+          </Link>
+        ) : (
+          <Link
+            to="/login"
+            className={`${styles.link} ${
+              currentPath.startsWith("/login") ? styles.active : ""
+            }`}
+          >
+            Login
+          </Link>
+        )}
+
         <Link
           to="/register"
           className={`${styles.link} ${
