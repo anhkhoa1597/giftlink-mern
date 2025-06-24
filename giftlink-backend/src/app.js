@@ -12,18 +12,18 @@ import config from "./config/config.js";
 const app = express();
 const apiRouter = express.Router();
 
-const { nodeEnv, cors, helmet } = config;
+const { nodeEnv } = config;
 // region 🛡️ Middleware
 // Enable CORS
 app.use(
   cors({
-    origin: cors.origin || "http://localhost:5173",
-    credentials: cors.credentials,
+    origin: config.cors.origin || "http://localhost:5173",
+    credentials: config.cors.credentials,
   })
 );
 app.use(
   helmet({
-    crossOriginResourcePolicy: helmet.crossOriginResourcePolicy, // Allow cross-origin resource sharing
+    crossOriginResourcePolicy: config.helmet.crossOriginResourcePolicy, // Allow cross-origin resource sharing
   })
 ); // Use Helmet for security headers
 app.use(express.json()); // Middleware to parse JSON requests
