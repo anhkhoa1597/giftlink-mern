@@ -89,10 +89,7 @@ export const register = async (req, res, next) => {
     res.status(201).json({
       message: "User registered",
       token,
-      userId: user._id,
-      email: user.email,
-      firstName: user.firstName,
-      lastName: user.lastName,
+      user,
     });
   } catch (err) {
     logger.error("Error registering user", { stack: err.stack });
@@ -123,8 +120,7 @@ export const loginUser = async (req, res, next) => {
     res.json({
       message: "Login successful",
       token,
-      userId: user._id,
-      email: user.email,
+      user,
     });
   } catch (error) {
     logger.error("Error logging in user", { stack: error.stack });
