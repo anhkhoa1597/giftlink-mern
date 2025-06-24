@@ -1,6 +1,8 @@
 import styles from "./RegisterPage.module.css";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { registerUser, setError } from "../features/auth/authSlice";
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
@@ -10,20 +12,44 @@ const RegisterPage = () => {
     password: "",
     confirmPassword: "",
   });
-  const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleSubmit = (e) => {
+  const dispatch = useDispatch();
+  const { loading, error } = useSelector((state) => state.auth);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const from = location.state?.from?.pathname || "/";
+
+  useEffect(() => {
+    dispatch(setError(""));
+  }, [dispatch]);
+
+  const handleRegister = async (e) => {
     e.preventDefault();
-    setError("");
     setSuccess("");
+    dispatch(setError(null));
+
     if (formData.password !== formData.confirmPassword) {
-      setError("Password and Confirm Password do not match.");
+      dispatch(setError({ message: "Passwords do not match." }));
       return;
     }
 
-    setSuccess("Registered successfully! Redirecting...");
+    try {
+      await dispatch(registerUser(formData)).unwrap();
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+      });
+      setSuccess("Register successfully! Redirecting...");
+      navigate(from, { replace: true });
+    } catch (err) {
+      console.error("Registration failed:", err);
+      // error sẽ được cập nhật trong slice → hiển thị bằng `error.message`
+    }
   };
 
   const handleChange = (e) => {
@@ -36,7 +62,7 @@ const RegisterPage = () => {
   return (
     <div className={styles.container}>
       <h2>Create Account</h2>
-      <form className={styles.form} onSubmit={handleSubmit}>
+      <form className={styles.form} onSubmit={handleRegister}>
         <div className={styles.row}>
           <label htmlFor="firstName">
             First Name
@@ -120,7 +146,8 @@ const RegisterPage = () => {
         <button className={styles.submitBtn} type="submit">
           Register
         </button>
-        {error && <p className={styles.error}>{error}</p>}
+        {loading && <p className={styles.loading}>Registering...</p>}
+        {error && <p className={styles.error}>{error.message}</p>}
         {success && <p className={styles.success}>{success}</p>}
         <p className={styles.redirectText}>
           Already have Account?{" "}

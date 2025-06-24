@@ -24,7 +24,7 @@ const MainPage = () => {
     <div className={styles.wrapper}>
       <div className={styles.grid}>
         {currentGifts.map((gift) => (
-          <div key={gift._id} className={styles.card}>
+          <div key={gift.id} className={styles.card}>
             <img
               className={styles.image}
               src={gift.image}
@@ -46,7 +46,7 @@ const MainPage = () => {
                 year: "numeric",
               })}
             </p>
-            <Link to="/" className={styles.btn}>
+            <Link to={`/details/${gift.id}`} className={styles.btn}>
               View Details
             </Link>
           </div>

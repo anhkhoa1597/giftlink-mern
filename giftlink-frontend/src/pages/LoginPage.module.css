@@ -84,6 +84,11 @@ input {
   margin-top: 0;
 }
 
+.loading {
+  color: orange;
+  margin-top: 0;
+}
+
 .redirectText {
   margin-top: 1.5rem;
   font-size: 1rem;

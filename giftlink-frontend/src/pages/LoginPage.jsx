@@ -1,33 +1,37 @@
 import styles from "./LoginPage.module.css";
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser, setError } from "../features/auth/authSlice";
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
-  const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
+  const dispatch = useDispatch();
+  const { loading, error } = useSelector((state) => state.auth);
 
   const location = useLocation();
   const navigate = useNavigate();
   const from = location.state?.from?.pathname || "/";
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    setError("");
     setSuccess("");
+    dispatch(setError(null));
 
-    handleLoginSuccess();
-  };
-
-  const handleLoginSuccess = () => {
-    setSuccess("Login successfully! Redirecting...");
-    dispatch(setToken(token));
-    dispatch(setUser(user));
-    navigate(from, { replace: true });
+    try {
+      await dispatch(loginUser(formData)).unwrap();
+      setFormData({ email: "", password: "" });
+      setSuccess("Login successfully! Redirecting...");
+      navigate(from, { replace: true });
+    } catch (err) {
+      console.error("Login failed:", err);
+    }
   };
 
   const handleChange = (e) => {
@@ -77,7 +81,8 @@ const LoginPage = () => {
         <button className={styles.submitBtn} type="submit">
           Login
         </button>
-        {error && <p className={styles.error}>{error}</p>}
+        {loading && <p className={styles.loading}>Logging in...</p>}
+        {error && <p className={styles.error}>{error.message}</p>}
         {success && <p className={styles.success}>{success}</p>}
         <p className={styles.redirectText}>
           Do not have Account?{" "}
