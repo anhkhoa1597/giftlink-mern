@@ -1,6 +1,6 @@
 import styles from "./LoginPage.module.css";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
@@ -11,12 +11,23 @@ const LoginPage = () => {
   const [success, setSuccess] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleSubmit = (e) => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const from = location.state?.from?.pathname || "/";
+
+  const handleLogin = (e) => {
     e.preventDefault();
     setError("");
     setSuccess("");
 
+    handleLoginSuccess();
+  };
+
+  const handleLoginSuccess = () => {
     setSuccess("Login successfully! Redirecting...");
+    dispatch(setToken(token));
+    dispatch(setUser(user));
+    navigate(from, { replace: true });
   };
 
   const handleChange = (e) => {
@@ -29,7 +40,7 @@ const LoginPage = () => {
   return (
     <div className={styles.container}>
       <h2>Login</h2>
-      <form className={styles.form} onSubmit={handleSubmit}>
+      <form className={styles.form} onSubmit={handleLogin}>
         <label htmlFor="email">
           Email
           <input
