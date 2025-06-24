@@ -24,41 +24,75 @@ export const getAllUsers = async (req, res, next) => {
 // Get user by ID
 export const getUserById = async (req, res, next) => {
   try {
-    const user = await User.findById(req.params.id, "-password");
+    const user = await User.findById(req.params.userId, "-password");
     if (!user) {
-      logger.warn(`User not found: ${req.params.id}`);
       throw new NotFoundError("User not found");
     }
-    logger.info(`Fetched user with id ${req.params.id}`);
+    logger.info(`Fetched user with id ${req.params.userId}`);
     res.json(user);
   } catch (err) {
-    logger.error(`Error fetching user by id ${req.params.id}`, {
+    logger.error(`Error fetching user by id ${req.params.userId}`, {
       stack: err.stack,
     });
     next(err);
   }
 };
 
-// Create a new user
+// Get current user
+export const getMe = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user.userId, "-password");
+    if (!user) {
+      throw new NotFoundError("User not found");
+    }
+    logger.info("Fetch Info User successfully");
+    res.json({ message: "Fetch Info User Successfully", user });
+  } catch (error) {
+    logger.error("Error fetching information of user", { stack: error.stack });
+    next(error);
+  }
+};
+
+// Register new user
 export const register = async (req, res, next) => {
   try {
-    const { username, password } = req.body;
-    if (!username || !password) {
-      logger.warn("Username and password are required for user creation");
-      throw new ValidationError("Username and password are required");
+    const { email, password, confirmPassword, firstName, lastName } = req.body;
+
+    if (!email || !password || !confirmPassword || !firstName || !lastName) {
+      throw new ValidationError(
+        "All fields (email, password, confirmPassword, firstName, lastName) are required"
+      );
     }
-    const existingUser = await User.findOne({ username });
+
+    if (password !== confirmPassword) {
+      throw new ValidationError("Passwords do not match");
+    }
+
+    const existingUser = await User.findOne({ email });
     if (existingUser) {
-      logger.warn(`Username already exists: ${username}`);
-      throw new ValidationError("Username already exists");
+      throw new ValidationError("User with this email already exists");
     }
+
     const hashedPassword = await hashPassword(password);
-    const user = new User({ username, password: hashedPassword });
+    const user = new User({
+      email,
+      password: hashedPassword,
+      firstName,
+      lastName,
+    });
+
     await user.save();
-    logger.info(`User created: ${user.username}`);
+
+    const token = generateToken({ userId: user._id, email: user.email });
+
+    logger.info(`User created: ${user.email}`);
     res.status(201).json({
       message: "User registered",
-      user: { _id: user._id, username: user.username },
+      token,
+      userId: user._id,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
     });
   } catch (err) {
     logger.error("Error registering user", { stack: err.stack });
@@ -66,90 +100,94 @@ export const register = async (req, res, next) => {
   }
 };
 
-// Login user
+// Login
 export const loginUser = async (req, res, next) => {
   try {
-    const { username, password } = req.body;
-    if (!username || !password) {
-      logger.warn("Username and password are required for user creation");
-      throw new ValidationError("Username and password are required");
+    const { email, password } = req.body;
+    if (!email || !password) {
+      throw new ValidationError("Email and password are required");
     }
-    const user = await User.findOne({ username });
+
+    const user = await User.findOne({ email });
     if (!user) {
-      logger.warn(`Login failed for username: ${username}`);
-      throw new UnauthorizedError("Invalid username or password");
+      throw new UnauthorizedError("Invalid email or password");
     }
+
     const isMatch = await comparePassword(password, user.password);
     if (!isMatch) {
-      logger.warn(`Login failed for username: ${username}`);
-      throw new UnauthorizedError("Invalid username or password");
+      throw new UnauthorizedError("Invalid email or password");
     }
-    const token = generateToken({ _id: user._id, username: user.username });
-    logger.info(`User logged in: ${user.username}`);
-    res.json({ message: "Login successful", token, userId: user._id });
+
+    const token = generateToken({ userId: user._id, email: user.email });
+    logger.info(`User logged in: ${user.email}`);
+    res.json({
+      message: "Login successful",
+      token,
+      userId: user._id,
+      email: user.email,
+    });
   } catch (error) {
     logger.error("Error logging in user", { stack: error.stack });
     next(error);
   }
 };
 
-// Logout user (for JWT, client should just delete token)
+// Logout
 export const logoutUser = async (req, res, next) => {
   try {
-    // For stateless JWT, logout is handled on client by deleting token
     res.json({ message: "Logout successful" });
   } catch (error) {
     next(error);
   }
 };
 
-// Update user password
+// Update password
 export const updatePassword = async (req, res, next) => {
   try {
     const { oldPassword, newPassword } = req.body;
     if (!oldPassword || !newPassword) {
-      logger.warn(
-        "Old password and new password is required for password change"
-      );
-      throw new ValidationError("Old password and new password is required");
+      throw new ValidationError("Old password and new password are required");
     }
 
-    const { _id, username } = req.user;
-    const user = await User.findById(_id);
+    const { userId } = req.user;
+    const user = await User.findById(userId);
     if (!user) {
-      logger.warn("User not found", _id);
       throw new NotFoundError("User not found");
     }
-    const oldPasswordIsMatch = await comparePassword(
-      oldPassword,
-      user.password
-    );
-    if (!oldPasswordIsMatch) {
-      logger.warn("Old password is mismatch");
-      throw new PasswordMismatchError("Old password is mismatch");
+
+    const isMatch = await comparePassword(oldPassword, user.password);
+    if (!isMatch) {
+      throw new PasswordMismatchError("Old password does not match");
     }
+
     user.password = await hashPassword(newPassword);
     await user.save();
-    logger.info("Password updated", { _id, username });
-    res.json({ message: "Password updated successfully", _id, username });
+
+    logger.info("Password updated", { userId, email: user.email });
+    res.json({
+      message: "Password updated successfully",
+      userId,
+      email: user.email,
+    });
   } catch (err) {
-    logger.error(`Error updating password`, { stack: err.stack });
+    logger.error("Error updating password", { stack: err.stack });
     next(err);
   }
 };
 
-// Delete user by ID
+// Delete user
 export const deleteUser = async (req, res, next) => {
   try {
-    const user = await User.findByIdAndDelete(req.params.id);
+    const user = await User.findByIdAndDelete(req.params.userId);
     if (!user) {
-      logger.warn(`User not found for deletion: ${req.params.id}`);
       throw new NotFoundError("User not found");
     }
-    logger.info(`User deleted: ${req.params.id}`);
-    res.json({ message: `User with id ${req.params.id} deleted` });
+    logger.info(`User deleted: ${req.params.userId}`);
+    res.json({ message: `User with id ${req.params.userId} deleted` });
   } catch (err) {
-    logger.error(`Error deleting user ${req.params.id}`, { stack: err.stack });
+    logger.error(`Error deleting user ${req.params.userId}`, {
+      stack: err.stack,
+    });
     next(err);
   }
 };

@@ -7,6 +7,7 @@ import {
   updatePassword,
   loginUser,
   logoutUser,
+  getMe,
 } from "../controllers/userController.js";
 import { authenticateToken } from "../middlewares/authMiddleware.js";
 
@@ -17,6 +18,9 @@ router.get("/", getAllUsers);
 
 // GET /users/:id - Get user by ID
 router.get("/:id", getUserById);
+
+// Get /users/me - Get information of user
+router.get("/me", authenticateToken, getMe);
 
 // POST /users/register - Create a new user
 router.post("/register", register);

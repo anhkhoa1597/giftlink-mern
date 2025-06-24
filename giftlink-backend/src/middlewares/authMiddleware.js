@@ -13,7 +13,7 @@ export const authenticateToken = (req, res, next) => {
   try {
     const decodedUser = verifyToken(token);
     req.user = decodedUser;
-    logger.info("Token verified successfully", { user: decodedUser.username });
+    logger.info("Token verified successfully", { user: decodedUser });
     next();
   } catch (error) {
     next(error);

@@ -14,7 +14,12 @@ const config = {
 
   cors: {
     origin: process.env.CORS_ORIGIN || "http://localhost:5173",
-    credentials: process.env.CORS_CREDENTIALS === "true",
+    credentials: process.env.CORS_CREDENTIALS || true,
+  },
+
+  helmet: {
+    crossOriginResourcePolicy:
+      process.env.HELMET_CROSS_ORIGIN_RESOURCE_POLICY || false,
   },
 
   log: {
