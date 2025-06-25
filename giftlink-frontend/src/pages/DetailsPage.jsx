@@ -42,7 +42,11 @@ const DetailsPage = () => {
           </p>
           <p>
             <strong>Date Added:</strong>
-            {gift.date_added}
+            {new Date(gift.date_added * 1000).toLocaleDateString("default", {
+                month: "long",
+                day: "numeric",
+                year: "numeric",
+              })}
           </p>
           <p>
             <strong>Age (Years):</strong>
