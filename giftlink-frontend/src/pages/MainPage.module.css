@@ -61,30 +61,6 @@
   color: #721c24;
 }
 
-.pagination {
-  margin-top: 2rem;
-  text-align: center;
-}
-
-.pageBtn {
-  background: #eee;
-  border: none;
-  margin: 0 5px;
-  padding: 8px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-.pageBtn:hover {
-  background: #ccc;
-}
-
-.active {
-  background: #333;
-  color: white;
-}
-
 .btn {
   display: inline-block;
   padding: 0.6rem 1.2rem;

@@ -6,6 +6,7 @@ import LayoutWithNav from "./layout/LayoutWithNav";
 import LoginPage from "./pages/LoginPage";
 import AppLayout from "./layout/AppLayout";
 import DetailsPage from "./pages/DetailsPage";
+
 const App = () => {
   return (
     <Router>

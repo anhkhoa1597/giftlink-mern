@@ -1,29 +1,39 @@
 import styles from "./MainPage.module.css";
-import useGifts from "../hooks/useGifts";
-import { useState } from "react";
 import { Link } from "react-router-dom";
-
-const GIFTS_PER_PAGE = 8;
+import config from "../config/config";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchGifts } from "../features/gift/giftSlice";
+import Pagination from "../components/Pagination";
 
 const MainPage = () => {
-  const { gifts, loading, error } = useGifts();
-  const [currentPage, setCurrentPage] = useState(1);
+  const dispatch = useDispatch();
+  const { gifts, status, error, page, totalPages } = useSelector(
+    (state) => state.gift
+  );
 
-  if (loading) return <p className={styles.message}>Loading gifts...</p>;
+  useEffect(() => {
+    if (status === "idle") {
+      dispatch(fetchGifts({ page: 1, limit: config.giftsPerPage }));
+    }
+  }, [dispatch, status]);
+
+  if (status === "loading")
+    return <p className={styles.message}>Loading gifts...</p>;
   if (error) return <p className={styles.message}>Error: {error}</p>;
-
-  const totalPages = Math.ceil(gifts.length / GIFTS_PER_PAGE);
-  const start = (currentPage - 1) * GIFTS_PER_PAGE;
-  const currentGifts = gifts.slice(start, start + GIFTS_PER_PAGE);
 
   const handleImageError = (e) => {
     e.target.src = "/images/no-image.png";
   };
 
+  const handlePageChange = (newPage) => {
+    dispatch(fetchGifts({ page: newPage, limit: config.giftsPerPage }));
+  };
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.grid}>
-        {currentGifts.map((gift) => (
+        {gifts.map((gift) => (
           <div key={gift.id} className={styles.card}>
             <img
               className={styles.image}
@@ -52,19 +62,11 @@ const MainPage = () => {
           </div>
         ))}
       </div>
-      <div className={styles.pagination}>
-        {Array.from({ length: totalPages }).map((_, index) => (
-          <button
-            key={index}
-            className={`${styles.pageBtn} ${
-              currentPage === index + 1 ? styles.active : ""
-            }`}
-            onClick={() => setCurrentPage(index + 1)}
-          >
-            {index + 1}
-          </button>
-        ))}
-      </div>
+      <Pagination
+        currentPage={page}
+        totalPages={totalPages}
+        onPageChange={(newPage) => handlePageChange(newPage)}
+      />
     </div>
   );
 };

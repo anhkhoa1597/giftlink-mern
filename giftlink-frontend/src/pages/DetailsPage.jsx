@@ -8,13 +8,14 @@ import { Link } from "react-router-dom";
 const DetailsPage = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const { gift, loading, error } = useSelector((state) => state.gift);
+  const { gift, status, error } = useSelector((state) => state.gift);
 
   useEffect(() => {
     if (id) dispatch(fetchGiftById(id));
   }, [id, dispatch]);
 
-  if (loading) return <p className={styles.message}>Loading Gift Detail...</p>;
+  if (status === "loading")
+    return <p className={styles.message}>Loading Gift Detail...</p>;
   if (error) return <p className={styles.message}>Error: {error}</p>;
   if (!gift) return null;
 
@@ -43,10 +44,10 @@ const DetailsPage = () => {
           <p>
             <strong>Date Added:</strong>
             {new Date(gift.date_added * 1000).toLocaleDateString("default", {
-                month: "long",
-                day: "numeric",
-                year: "numeric",
-              })}
+              month: "long",
+              day: "numeric",
+              year: "numeric",
+            })}
           </p>
           <p>
             <strong>Age (Years):</strong>

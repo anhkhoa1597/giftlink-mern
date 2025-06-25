@@ -77,7 +77,6 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
-        console.log("action payload: ", action.payload);
         state.token = action.payload.token;
         state.user = action.payload.user;
         state.loading = false;
@@ -85,7 +84,6 @@ const authSlice = createSlice({
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
-        console.log(action.payload);
         state.error = action.payload || "Something went wrong";
       });
   },

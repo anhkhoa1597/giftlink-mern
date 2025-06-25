@@ -2,30 +2,34 @@ import { configureStore } from "@reduxjs/toolkit";
 import giftReducer from "../features/gift/giftSlice";
 import authReducer from "../features/auth/authSlice";
 
-import storage from "redux-persist/lib/storage"; // mặc định là localStorage
+import storage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";
 import { combineReducers } from "redux";
 
-const persistConfig = {
-  key: "root",
+// Persist config từng slice
+const authPersistConfig = {
+  key: "auth",
   storage,
-  whitelist: ["auth"], // chỉ persist slice "auth"
+  whitelist: ["user", "token"],
 };
 
+const giftPersistConfig = {
+  key: "gift",
+  storage,
+  whitelist: ["gifts"],
+};
+
+// Gộp reducer đã persist
 const rootReducer = combineReducers({
-  auth: authReducer,
-  // thêm reducer khác nếu cần
-  gift: giftReducer,
+  auth: persistReducer(authPersistConfig, authReducer),
+  gift: persistReducer(giftPersistConfig, giftReducer),
 });
 
-const persistedReducer = persistReducer(persistConfig, rootReducer);
-
+// Store setup
 export const store = configureStore({
-  reducer: persistedReducer,
+  reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: false, // tránh warning với redux-persist
-    }),
+    getDefaultMiddleware({ serializableCheck: false }),
 });
 
 export const persistor = persistStore(store);

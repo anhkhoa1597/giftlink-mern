@@ -6,7 +6,7 @@ import { logout } from "../features/auth/authSlice";
 const Navbar = () => {
   const location = useLocation();
   const currentPath = location.pathname;
-  const { user, token } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   const handleLogout = (e) => {
@@ -14,7 +14,7 @@ const Navbar = () => {
     if (confirmed) {
       dispatch(logout());
     } else {
-      e.preventDefault(); // 🔥 chặn Link chuyển trang
+      e.preventDefault(); //
     }
   };
   return (
@@ -49,7 +49,7 @@ const Navbar = () => {
         </Link>
         {user ? (
           <>
-          <p className={styles.hello}>Hello, {user.lastName}</p>
+            <p className={styles.hello}>Hello, {user.lastName}</p>
             <Link
               to="/login"
               className={`${styles.link}`}
