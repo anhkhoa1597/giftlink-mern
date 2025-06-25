@@ -7,7 +7,6 @@ import axios from "axios";
 
 const AppLayout = () => {
   const { token, user } = useSelector((state) => state.auth);
-  console.log({ token, user });
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);

@@ -8,7 +8,29 @@ const DetailsPage = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const { gift, status, error } = useSelector((state) => state.gift);
-
+  const comments = [
+    {
+      author: "John Doe",
+      comment: "I would like this!",
+    },
+    {
+      author: "Jane Smith",
+      comment: "Just DMed you.",
+    },
+    {
+      author: "Alice Johnson",
+      comment: "I will take it if it's still available.",
+    },
+    {
+      author: "Mike Brown",
+      comment: "This is a good one!",
+    },
+    {
+      author: "Sarah Wilson",
+      comment:
+        "My family can use one. DM me if it is still available. Thank you!",
+    },
+  ];
   useEffect(() => {
     if (id) dispatch(fetchGiftById(id));
   }, [id, dispatch]);
@@ -62,8 +84,17 @@ const DetailsPage = () => {
       </div>
 
       <div className={styles.commentSection}>
-        <h3>Bình luận</h3>
-        {/* Future: comment list or form */}
+        <h3>Comments</h3>
+        {comments.map((e, index) => {
+          return (
+            <div key={index} className={styles.comment}>
+              <p className={styles.author}>
+                <strong>{e.author}</strong>
+              </p>
+              <p className={styles.text}>{e.comment}</p>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

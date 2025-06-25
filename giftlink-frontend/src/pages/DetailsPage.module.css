@@ -55,7 +55,29 @@
 }
 
 .commentSection {
-  margin-top: 48px;
+  margin-top: 2rem;
+  padding: 1rem;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+
+.comment {
+  padding: 0.75rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.comment:last-child {
+  border-bottom: none;
+}
+
+.author {
+  font-weight: bold;
+  color: #333;
+}
+
+.text {
+  margin-top: 0.25rem;
+  color: #555;
 }
 
 .message {

@@ -40,6 +40,7 @@ const MainPage = () => {
               src={gift.image}
               alt={gift.name}
               onError={handleImageError}
+              loading="lazy"
             />
             <h2>{gift.name}</h2>
             <p
