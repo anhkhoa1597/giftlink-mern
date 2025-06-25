@@ -1,9 +1,8 @@
 import styles from "./DetailsPage.module.css";
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchGiftById } from "../features/gift/giftSlice";
-import { Link } from "react-router-dom";
 
 const DetailsPage = () => {
   const { id } = useParams();
@@ -22,27 +21,31 @@ const DetailsPage = () => {
   const handleImageError = (e) => {
     e.target.src = "/images/no-image.png";
   };
+
   return (
-    <div className={styles.container}>
+    <div className={styles.page}>
       <div className={styles.card}>
-        <h2 className={styles.title}>{gift.name}</h2>
-        <div className={styles.card_body}>
+        <div className={styles.imageWrapper}>
+          <Link to="/main" className={styles.backBtn}>
+            Return
+          </Link>
           <img
             className={styles.image}
             src={gift.image}
             alt={gift.name}
             onError={handleImageError}
           />
+        </div>
+        <div className={styles.details}>
+          <h2 className={styles.title}>{gift.name}</h2>
           <p>
-            <strong>Category:</strong>
-            {gift.category}
+            <strong>Category:</strong> {gift.category}
           </p>
           <p>
-            <strong>Condition:</strong>
-            {gift.condition}
+            <strong>Condition:</strong> {gift.condition}
           </p>
           <p>
-            <strong>Date Added:</strong>
+            <strong>Date Added:</strong>{" "}
             {new Date(gift.date_added * 1000).toLocaleDateString("default", {
               month: "long",
               day: "numeric",
@@ -50,18 +53,17 @@ const DetailsPage = () => {
             })}
           </p>
           <p>
-            <strong>Age (Years):</strong>
-            {gift.age_years}
+            <strong>Age (Years):</strong> {gift.age_years}
           </p>
           <p>
-            <strong>Description:</strong>
-            {gift.description}
+            <strong>Description:</strong> {gift.description}
           </p>
         </div>
       </div>
-      <div>
-        <h3>Comments</h3>
-        {}
+
+      <div className={styles.commentSection}>
+        <h3>Bình luận</h3>
+        {/* Future: comment list or form */}
       </div>
     </div>
   );

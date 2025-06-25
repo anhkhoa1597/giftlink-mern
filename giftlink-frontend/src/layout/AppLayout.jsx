@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useNavigate } from "react-router-dom";
 import { setUser, logout } from "../features/auth/authSlice";
+import config from "../config/config";
 import axios from "axios";
 
 const AppLayout = () => {
-  const token = useSelector((state) => state.auth.token);
+  const { token, user } = useSelector((state) => state.auth);
+  console.log({ token, user });
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
@@ -19,11 +21,12 @@ const AppLayout = () => {
       }
 
       try {
-        const res = await axios.get("/users/me", {
+        const res = await axios.get(`${config.baseUrl}/api/users/me`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        dispatch(setUser(res.data));
+        //res.data : {message, user}
+        dispatch(setUser(res.data.user));
       } catch (err) {
         dispatch(logout());
         navigate("/login");

@@ -1,65 +1,65 @@
-.container {
-  max-width: 800px;
-  margin: 40px auto;
-  padding: 24px;
-  background-color: #ffffff;
-  border-radius: 12px;
+.page {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 32px 16px;
+}
+
+.card {
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  background-color: #fff;
+  border-radius: 16px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  font-family: "Segoe UI", sans-serif;
+  padding: 24px;
+}
+
+.imageWrapper {
+  flex: 1 1 400px;
+  max-width: 500px;
+}
+
+.image {
+  width: 100%;
+  border-radius: 12px;
+  object-fit: cover;
+  max-height: 600px;
+}
+
+.details {
+  flex: 1 1 400px;
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.backBtn {
+  margin-bottom: 20px;
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: #0077cc;
+  color: white;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.backBtn:hover {
+  background-color: #005fa3;
+}
+
+.commentSection {
+  margin-top: 48px;
 }
 
 .message {
   text-align: center;
-  font-size: 1.2rem;
-  margin-top: 100px;
-  color: #666;
-}
-
-.card {
-  padding: 16px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-}
-
-.title {
-  font-size: 1.8rem;
-  font-weight: bold;
-  margin-bottom: 16px;
-  color: #333;
-}
-
-.card_body {
-  display: flex;
-  gap: 24px;
-  align-items: flex-start;
-  flex-wrap: wrap;
-}
-
-.image {
-  width: 200px;
-  height: auto;
-  border-radius: 8px;
-  object-fit: cover;
-  background-color: #e0e0e0;
-}
-
-.card_body p {
-  flex: 1;
-  min-width: 250px;
-  margin: 8px 0;
-  font-size: 1rem;
-  color: #444;
-}
-
-.card_body strong {
-  color: #222;
-  margin-right: 6px;
-}
-
-h3 {
-  margin-top: 40px;
-  font-size: 1.4rem;
-  color: #333;
-  border-bottom: 2px solid #eee;
-  padding-bottom: 8px;
+  padding: 40px;
+  font-size: 20px;
 }

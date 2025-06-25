@@ -16,10 +16,9 @@ const authPersistConfig = {
 const giftPersistConfig = {
   key: "gift",
   storage,
-  whitelist: ["gifts"],
+  whitelist: ["page"],
 };
 
-// Gộp reducer đã persist
 const rootReducer = combineReducers({
   auth: persistReducer(authPersistConfig, authReducer),
   gift: persistReducer(giftPersistConfig, giftReducer),
