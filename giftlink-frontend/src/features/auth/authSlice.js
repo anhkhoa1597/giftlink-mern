@@ -1,23 +1,25 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-import config from "../../config/config";
+import apiClient, { handleApi } from "../../api/apiClient";
 
 export const registerUser = createAsyncThunk(
   "auth/registerUser",
-  async (formData) => {
-    const res = await axios.post(
-      `${config.baseUrl}/api/users/register`,
-      formData
+  (formData, { rejectWithValue }) => {
+    return handleApi(
+      () => apiClient.post(`/api/users/register`, formData),
+      rejectWithValue,
+      "Register failed"
     );
-    return res.data;
   }
 );
 
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
-  async (formData) => {
-    const res = await axios.post(`${config.baseUrl}/api/users/login`, formData);
-    return res.data; // { token, user }
+  (formData, { rejectWithValue }) => {
+    return handleApi(
+      () => apiClient.post(`/api/users/login`, formData),
+      rejectWithValue,
+      "Login failed"
+    );
   }
 );
 
@@ -38,6 +40,13 @@ const authSlice = createSlice({
     },
     setError: (state, action) => {
       state.error = action.payload;
+    },
+    setLoading: (state, action) => {
+      state.loading = action.payload;
+    },
+    setReset: (state, action) => {
+      state.loading = action.payload.loading;
+      state.error = action.payload.error;
     },
     logout: (state) => {
       state.token = null;
@@ -60,7 +69,7 @@ const authSlice = createSlice({
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error;
+        state.error = action.payload || "Something went wrong";
       })
 
       .addCase(loginUser.pending, (state) => {
@@ -68,6 +77,7 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
+        console.log("action payload: ", action.payload);
         state.token = action.payload.token;
         state.user = action.payload.user;
         state.loading = false;
@@ -75,10 +85,12 @@ const authSlice = createSlice({
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error;
+        console.log(action.payload);
+        state.error = action.payload || "Something went wrong";
       });
   },
 });
 
-export const { setToken, setUser, logout, setError } = authSlice.actions;
+export const { setToken, setUser, logout, setError, setLoading, setReset } =
+  authSlice.actions;
 export default authSlice.reducer;
