@@ -16,11 +16,11 @@ const router = express.Router();
 // GET /users - Get all users
 router.get("/", getAllUsers);
 
-// GET /users/:id - Get user by ID
-router.get("/:id", getUserById);
-
 // Get /users/me - Get information of user
 router.get("/me", authenticateToken, getMe);
+
+// GET /users/:id - Get user by ID
+router.get("/:id", getUserById);
 
 // POST /users/register - Create a new user
 router.post("/register", register);

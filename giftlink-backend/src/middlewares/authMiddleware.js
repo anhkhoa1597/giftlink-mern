@@ -6,7 +6,6 @@ export const authenticateToken = (req, res, next) => {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
   if (!token) {
-    logger.warn("No token provided");
     return next(new UnauthorizedError("Token required"));
   }
 

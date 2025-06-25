@@ -31,13 +31,10 @@ export const verifyToken = (token) => {
     return decoded;
   } catch (error) {
     if (error.name === "TokenExpiredError") {
-      logger.warn("Token expired", { stack: error.stack });
       throw new InvalidTokenError("Token expired");
     } else if (error.name === "JsonWebTokenError") {
-      logger.warn("Invalid token", { stack: error.stack });
       throw new InvalidTokenError("Invalid token");
     } else {
-      logger.error("Token verification failed", { stack: error.stack });
       throw new InvalidTokenError(
         "Token verification failed: " + error.message
       );

@@ -41,6 +41,7 @@ export const getUserById = async (req, res, next) => {
 // Get current user
 export const getMe = async (req, res, next) => {
   try {
+    console.log("req user", req.user);
     const user = await User.findById(req.user.userId, "-password");
     if (!user) {
       throw new NotFoundError("User not found");
