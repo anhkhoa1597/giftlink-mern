@@ -13,6 +13,31 @@ export const getAllGifts = async (req, res, next) => {
   }
 };
 
+export const getPaginatedGifts = async (req, res, next) => {
+  try {
+    const page = parseInt(req.query.page) || 1; // trang hiện tại (mặc định 1)
+    const limit = parseInt(req.query.limit) || 12; // số phần tử mỗi trang
+
+    const skip = (page - 1) * limit;
+
+    const [gifts, total] = await Promise.all([
+      Gift.find().skip(skip).limit(limit),
+      Gift.countDocuments(),
+    ]);
+
+    logger.info("Fetch Gifts successfully");
+    res.json({
+      gifts,
+      total,
+      page,
+      totalPages: Math.ceil(total / limit),
+    });
+  } catch (err) {
+    logger.error("Error", { stack: err.stack });
+    res.status(500).json({ error: "Server error" });
+  }
+};
+
 export const getGiftById = async (req, res, next) => {
   try {
     const id = req.params.id;
