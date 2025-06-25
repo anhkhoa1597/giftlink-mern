@@ -1,8 +1,8 @@
 import styles from "./LoginPage.module.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser, setError } from "../features/auth/authSlice";
+import { loginUser, setReset } from "../features/auth/authSlice";
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
@@ -19,10 +19,14 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const from = location.state?.from?.pathname || "/main";
 
+  useEffect(() => {
+    dispatch(setReset({ error: null, loading: false }));
+  }, [dispatch]);
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setSuccess("");
-    dispatch(setError(null));
+    dispatch(setReset({ error: null, loading: false }));
 
     try {
       await dispatch(loginUser(formData)).unwrap();

@@ -48,32 +48,36 @@ const Navbar = () => {
           Search
         </Link>
         {user ? (
-          <Link
-            to="/login"
-            className={`${styles.link}`}
-            onClick={(e) => handleLogout(e)}
-          >
-            Logout
-          </Link>
+          <>
+          <p className={styles.hello}>Hello, {user.lastName}</p>
+            <Link
+              to="/login"
+              className={`${styles.link}`}
+              onClick={(e) => handleLogout(e)}
+            >
+              Logout
+            </Link>
+          </>
         ) : (
-          <Link
-            to="/login"
-            className={`${styles.link} ${
-              currentPath.startsWith("/login") ? styles.active : ""
-            }`}
-          >
-            Login
-          </Link>
+          <>
+            <Link
+              to="/login"
+              className={`${styles.link} ${
+                currentPath.startsWith("/login") ? styles.active : ""
+              }`}
+            >
+              Login
+            </Link>
+            <Link
+              to="/register"
+              className={`${styles.link} ${
+                currentPath.startsWith("/register") ? styles.active : ""
+              }`}
+            >
+              Register
+            </Link>
+          </>
         )}
-
-        <Link
-          to="/register"
-          className={`${styles.link} ${
-            currentPath.startsWith("/register") ? styles.active : ""
-          }`}
-        >
-          Register
-        </Link>
       </div>
     </nav>
   );

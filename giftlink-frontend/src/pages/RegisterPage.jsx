@@ -2,7 +2,7 @@ import styles from "./RegisterPage.module.css";
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { registerUser, setError } from "../features/auth/authSlice";
+import { registerUser, setError, setReset } from "../features/auth/authSlice";
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
@@ -22,13 +22,13 @@ const RegisterPage = () => {
   const from = location.state?.from?.pathname || "/main";
 
   useEffect(() => {
-    dispatch(setError(""));
+    dispatch(setReset({ error: null, loading: false }));
   }, [dispatch]);
 
   const handleRegister = async (e) => {
     e.preventDefault();
     setSuccess("");
-    dispatch(setError(null));
+    dispatch(setReset({ error: null, loading: false }));
 
     if (formData.password !== formData.confirmPassword) {
       dispatch(setError({ message: "Passwords do not match." }));
