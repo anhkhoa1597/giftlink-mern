@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import giftReducer from "../features/gift/giftSlice";
 import authReducer from "../features/auth/authSlice";
+import searchReducer from "../features/search/searchSlice";
 
 import storage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";
@@ -19,9 +20,16 @@ const giftPersistConfig = {
   whitelist: ["page"],
 };
 
+const searchPersistConfig = {
+  key: "search",
+  storage,
+  whitelist: ["page"],
+};
+
 const rootReducer = combineReducers({
   auth: persistReducer(authPersistConfig, authReducer),
   gift: persistReducer(giftPersistConfig, giftReducer),
+  search: persistReducer(searchPersistConfig, searchReducer),
 });
 
 // Store setup

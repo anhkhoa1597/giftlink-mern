@@ -6,6 +6,7 @@ import LayoutWithNav from "./layout/LayoutWithNav";
 import LoginPage from "./pages/LoginPage";
 import AppLayout from "./layout/AppLayout";
 import DetailsPage from "./pages/DetailsPage";
+import SearchPage from "./pages/SearchPage";
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
         <Route path="/" element={<HomePage />}></Route>
         <Route element={<LayoutWithNav />}>
           <Route path="/main" element={<MainPage />}></Route>
+          <Route path="/search" element={<SearchPage />}></Route>
           <Route path="/register" element={<RegisterPage />}></Route>
           <Route path="/login" element={<LoginPage />}></Route>
           //protected route

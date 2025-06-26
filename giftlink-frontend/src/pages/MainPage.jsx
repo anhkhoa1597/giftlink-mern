@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchGifts } from "../features/gift/giftSlice";
 import Pagination from "../components/Pagination";
+import GiftCard from "../components/GiftCard";
 
 const MainPage = () => {
   const dispatch = useDispatch();
@@ -13,18 +14,12 @@ const MainPage = () => {
   );
 
   useEffect(() => {
-    if (status === "idle") {
       dispatch(fetchGifts({ page: 1, limit: config.giftsPerPage }));
-    }
-  }, [dispatch, status]);
+  }, [dispatch]);
 
   if (status === "loading")
     return <p className={styles.message}>Loading gifts...</p>;
   if (error) return <p className={styles.message}>Error: {error}</p>;
-
-  const handleImageError = (e) => {
-    e.target.src = "/images/no-image.png";
-  };
 
   const handlePageChange = (newPage) => {
     dispatch(fetchGifts({ page: newPage, limit: config.giftsPerPage }));
@@ -34,33 +29,7 @@ const MainPage = () => {
     <div className={styles.wrapper}>
       <div className={styles.grid}>
         {gifts.map((gift) => (
-          <div key={gift.id} className={styles.card}>
-            <img
-              className={styles.image}
-              src={gift.image}
-              alt={gift.name}
-              onError={handleImageError}
-              loading="lazy"
-            />
-            <h2>{gift.name}</h2>
-            <p
-              className={`${styles.condition} ${
-                styles[gift.condition.replace(/\s/g, "").toLowerCase()]
-              }`}
-            >
-              {gift.condition}
-            </p>
-            <p>
-              {new Date(gift.date_added * 1000).toLocaleDateString("default", {
-                month: "long",
-                day: "numeric",
-                year: "numeric",
-              })}
-            </p>
-            <Link to={`/details/${gift.id}`} className={styles.btn}>
-              View Details
-            </Link>
-          </div>
+          <GiftCard key={gift.id} gift={gift} />
         ))}
       </div>
       <Pagination

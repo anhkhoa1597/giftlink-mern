@@ -1,0 +1,112 @@
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: Arial, sans-serif;
+}
+
+.form {
+  background-color: #f8f8f8;
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+fieldset {
+  border: 1px solid #ccc;
+  padding: 1rem;
+  border-radius: 8px;
+  min-width: 280px;
+}
+
+legend {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+input[type="text"],
+input[type="range"] {
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+input[type="range"] {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.searchBtn {
+  background-color: #4caf50;
+  color: white;
+  font-weight: bold;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  align-self: center;
+}
+
+.searchBtn:hover {
+  background-color: #388e3c;
+}
+
+.result {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.giftCard {
+  border: 1px solid #ddd;
+  padding: 1rem;
+  border-radius: 10px;
+  background-color: #fff;
+  transition: box-shadow 0.2s ease;
+}
+
+.giftCard:hover {
+  box-shadow: 0 2px 8px #0000001a;
+}
+.error {
+  color: #d93025;
+  margin-top: 0;
+}
+
+.success {
+  color: #188038;
+  margin-top: 0;
+}
+
+.loading {
+  color: orange;
+  margin-top: 0;
+}
+@media (max-width: 768px) {
+  .form {
+    flex-direction: column;
+  }
+
+  fieldset {
+    width: 100%;
+  }
+
+  .searchBtn {
+    width: 100%;
+  }
+}

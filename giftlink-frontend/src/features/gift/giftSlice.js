@@ -24,6 +24,7 @@ const giftSlice = createSlice({
   name: "gift",
   initialState: {
     gifts: [],
+    searchGifts: [],
     gift: null,
     status: "idle", // 'idle' | 'loading' | 'succeeded' | 'failed'
     error: null,
