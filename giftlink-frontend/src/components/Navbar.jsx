@@ -49,7 +49,9 @@ const Navbar = () => {
         </Link>
         {user ? (
           <>
-            <p className={styles.hello}>Hello, {user.lastName}</p>
+            <Link to="/profile" className={`${styles.profile}`}>
+              Hello, {user.lastName}
+            </Link>
             <Link
               to="/login"
               className={`${styles.link}`}

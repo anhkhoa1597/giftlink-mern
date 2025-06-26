@@ -23,6 +23,46 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+export const updateUserName = createAsyncThunk(
+  "auth/updateUserName",
+  (name, { rejectWithValue, getState }) => {
+    const { token } = getState().auth;
+    return handleApi(
+      () =>
+        apiClient.put(
+          `/api/users/update-user-name`,
+          {
+            lastName: name,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        ),
+      rejectWithValue,
+      "User's name update failed"
+    );
+  }
+);
+
+export const changePassword = createAsyncThunk(
+  "auth/changePassword",
+  (formData, { rejectWithValue, getState }) => {
+    const { token } = getState().auth;
+    return handleApi(
+      () =>
+        apiClient.put(`/api/users/update-password`, formData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }),
+      rejectWithValue,
+      "Password update failed"
+    );
+  }
+);
+
 const authSlice = createSlice({
   name: "auth",
   initialState: {
@@ -83,6 +123,33 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(loginUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Something went wrong";
+      })
+
+      .addCase(updateUserName.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateUserName.fulfilled, (state, action) => {
+        state.user.lastName = action.payload.lastName;
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(updateUserName.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Something went wrong";
+      })
+
+      .addCase(changePassword.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(changePassword.fulfilled, (state) => {
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(changePassword.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Something went wrong";
       });

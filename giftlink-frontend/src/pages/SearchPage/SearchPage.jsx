@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styles from "./SearchPage.module.css";
-import Pagination from "../components/Pagination";
-import { fetchSearchGifts } from "../features/search/searchSlice";
-import GiftCard from "../components/GiftCard";
+import Pagination from "../../components/Pagination";
+import { fetchSearchGifts } from "../../features/search/searchSlice";
+import GiftCard from "../../components/GiftCard";
 
 const SearchPage = () => {
   const dispatch = useDispatch();
@@ -56,6 +56,7 @@ const SearchPage = () => {
               type="text"
               name="category"
               id="category"
+              className={styles.textInp}
               placeholder="e.g. book, toy"
               value={filters.category}
               onChange={handleChange}
@@ -67,6 +68,7 @@ const SearchPage = () => {
               type="text"
               name="condition"
               id="condition"
+              className={styles.textInp}
               placeholder="e.g. new, used"
               value={filters.condition}
               onChange={handleChange}
@@ -80,6 +82,7 @@ const SearchPage = () => {
               id="age_years"
               min="0"
               max="20"
+              className={styles.rangeInp}
               value={filters.age_years}
               onChange={handleChange}
             />
@@ -93,6 +96,7 @@ const SearchPage = () => {
               type="text"
               name="name"
               id="name"
+              className={styles.textInp}
               placeholder="Search for items..."
               value={filters.name}
               onChange={handleChange}

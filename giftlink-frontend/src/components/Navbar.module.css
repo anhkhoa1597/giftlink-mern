@@ -27,16 +27,6 @@
   background: none;
 }
 
-.hello {
-  font-size: 1.1rem;
-  font-weight: bold;
-  color: #333;
-  text-decoration: none;
-  padding: 0.5rem 0;
-  position: relative;
-  margin: 0;
-}
-
 .link {
   font-size: 1.1rem;
   font-weight: bold;
@@ -64,6 +54,36 @@
 }
 
 .link:hover::after {
+  width: 100%;
+}
+
+.profile {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #333;
+  text-decoration: none;
+  padding: 0.5rem 0;
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+.profile::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 0%;
+  height: 2px;
+  background-color: #333;
+  transition: width 0.3s ease;
+}
+
+.profile:hover {
+  color: #333;
+  background-color: #f5f6f7;
+}
+
+.profile:hover::after {
   width: 100%;
 }
 

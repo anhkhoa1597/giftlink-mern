@@ -1,12 +1,13 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import HomePage from "./pages/HomePage";
-import MainPage from "./pages/MainPage";
-import RegisterPage from "./pages/RegisterPage";
+import HomePage from "./pages/HomePage/HomePage";
+import MainPage from "./pages/MainPage/MainPage";
+import RegisterPage from "./pages/RegisterPage/RegisterPage";
 import LayoutWithNav from "./layout/LayoutWithNav";
-import LoginPage from "./pages/LoginPage";
+import LoginPage from "./pages/LoginPage/LoginPage";
 import AppLayout from "./layout/AppLayout";
-import DetailsPage from "./pages/DetailsPage";
-import SearchPage from "./pages/SearchPage";
+import DetailsPage from "./pages/DetailsPage/DetailsPage";
+import SearchPage from "./pages/SearchPage/SearchPage";
+import ProfilePage from "./pages/ProfilePage/ProfilePage";
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
           //protected route
           <Route element={<AppLayout />}>
             <Route path="/details/:id" element={<DetailsPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
           </Route>
         </Route>
       </Routes>

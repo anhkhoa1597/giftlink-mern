@@ -2,7 +2,11 @@ import styles from "./RegisterPage.module.css";
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { registerUser, setError, setReset } from "../features/auth/authSlice";
+import {
+  registerUser,
+  setError,
+  setReset,
+} from "../../features/auth/authSlice";
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({

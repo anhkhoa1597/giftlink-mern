@@ -1,11 +1,11 @@
 import styles from "./MainPage.module.css";
 import { Link } from "react-router-dom";
-import config from "../config/config";
+import config from "../../config/config";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchGifts } from "../features/gift/giftSlice";
-import Pagination from "../components/Pagination";
-import GiftCard from "../components/GiftCard";
+import { fetchGifts } from "../../features/gift/giftSlice";
+import Pagination from "../../components/Pagination";
+import GiftCard from "../../components/GiftCard";
 
 const MainPage = () => {
   const dispatch = useDispatch();

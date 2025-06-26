@@ -1,5 +1,5 @@
 .container {
-  max-width: 300px;
+  max-width: 500px;
   margin: 4rem auto;
   padding: 2rem;
   border-radius: 8px;
@@ -20,6 +20,15 @@ h2 {
   gap: 1rem;
 }
 
+.row {
+  display: flex;
+  gap: 1rem;
+}
+
+.row label {
+  flex: 1;
+}
+
 label {
   display: flex;
   flex-direction: column;
@@ -34,6 +43,8 @@ input {
   border-radius: 6px;
   font-size: 1rem;
   margin: 8px 0 0;
+  width: 100%; /* thêm dòng này */
+  box-sizing: border-box; /* đảm bảo padding không phá layout */
 }
 
 .passwordWrapper {
@@ -64,7 +75,7 @@ input {
   font-size: 1rem;
   background-color: #0077cc;
   color: white;
-  border: none;
+  border: 1px #0077cc solid;
   border-radius: 6px;
   cursor: pointer;
   transition: background 0.2s ease;

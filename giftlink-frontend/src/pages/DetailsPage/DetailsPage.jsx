@@ -2,7 +2,7 @@ import styles from "./DetailsPage.module.css";
 import { useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchGiftById } from "../features/gift/giftSlice";
+import { fetchGiftById } from "../../features/gift/giftSlice";
 
 const DetailsPage = () => {
   const { id } = useParams();

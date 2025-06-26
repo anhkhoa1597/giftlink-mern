@@ -2,7 +2,6 @@
   max-width: 600px;
   margin: 0 auto;
   padding: 2rem;
-  font-family: Arial, sans-serif;
 }
 
 .form {
@@ -14,6 +13,7 @@
   flex-wrap: wrap;
   gap: 1rem;
   justify-content: space-between;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
   flex-direction: column;
 }
 
@@ -33,37 +33,37 @@ label {
   display: flex;
   flex-direction: column;
   margin-bottom: 1rem;
-  font-size: 0.95rem;
+  font-size: 1rem;
+  font-weight: 500;
 }
 
-input[type="text"],
-input[type="range"] {
+.textInp,
+.rangeInp {
   margin-top: 0.5rem;
-  padding: 0.5rem;
+  padding: 0.75rem;
   border-radius: 6px;
   border: 1px solid #ccc;
   font-size: 1rem;
 }
 
-input[type="range"] {
+.rangeInp {
   width: 100%;
   box-sizing: border-box;
 }
 
 .searchBtn {
-  background-color: #4caf50;
+  padding: 0.75rem;
+  font-size: 1rem;
+  background-color: #0077cc;
   color: white;
-  font-weight: bold;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
+  border: 1px #0077cc solid;
+  border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  align-self: center;
+  transition: background 0.2s ease;
 }
 
 .searchBtn:hover {
-  background-color: #388e3c;
+  background-color: #005fa3;
 }
 
 .result {
