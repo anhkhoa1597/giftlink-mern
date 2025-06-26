@@ -1,5 +1,4 @@
 import styles from "./MainPage.module.css";
-import { Link } from "react-router-dom";
 import config from "../../config/config";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,7 +13,7 @@ const MainPage = () => {
   );
 
   useEffect(() => {
-      dispatch(fetchGifts({ page: 1, limit: config.giftsPerPage }));
+    dispatch(fetchGifts({ page: 1, limit: config.giftsPerPage }));
   }, [dispatch]);
 
   if (status === "loading")
