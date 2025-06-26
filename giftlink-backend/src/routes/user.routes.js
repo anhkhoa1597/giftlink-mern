@@ -8,6 +8,7 @@ import {
   loginUser,
   logoutUser,
   getMe,
+  updateUserName,
 } from "../controllers/userController.js";
 import { authenticateToken } from "../middlewares/authMiddleware.js";
 
@@ -30,6 +31,9 @@ router.post("/login", loginUser);
 
 // POST /users/logout - Logging out user
 router.post("/logout", logoutUser);
+
+// PUT /users/change-userName - Update user name
+router.put("/update-user-name", authenticateToken, updateUserName);
 
 // PUT /users/update-password - Update user password
 router.put("/update-password", authenticateToken, updatePassword);

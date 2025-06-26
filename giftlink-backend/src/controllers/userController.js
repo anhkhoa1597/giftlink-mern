@@ -139,12 +139,35 @@ export const logoutUser = async (req, res, next) => {
   }
 };
 
+export const updateUserName = async (req, res, next) => {
+  try {
+    const { lastName } = req.body;
+    const { userId } = req.user;
+    const user = await User.findById(userId);
+    if (!user) {
+      throw new NotFoundError("User not found");
+    }
+
+    user.lastName = lastName;
+    await user.save();
+
+    logger.info("User Name updated", { userId, newName: lastName });
+    res.json({
+      message: "User Name updated successfully",
+      userId,
+      lastName,
+    });
+  } catch (error) {}
+};
+
 // Update password
 export const updatePassword = async (req, res, next) => {
   try {
-    const { oldPassword, newPassword } = req.body;
-    if (!oldPassword || !newPassword) {
-      throw new ValidationError("Old password and new password are required");
+    const { oldPassword, newPassword, confirmPassword } = req.body;
+    if (!oldPassword || !newPassword || !confirmPassword) {
+      throw new ValidationError(
+        "All fields (old password, new password confirm new password) are required"
+      );
     }
 
     const { userId } = req.user;
@@ -156,6 +179,10 @@ export const updatePassword = async (req, res, next) => {
     const isMatch = await comparePassword(oldPassword, user.password);
     if (!isMatch) {
       throw new PasswordMismatchError("Old password does not match");
+    }
+
+    if (newPassword !== confirmPassword) {
+      throw new ValidationError("Passwords do not match");
     }
 
     user.password = await hashPassword(newPassword);
