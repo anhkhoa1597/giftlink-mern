@@ -1,11 +1,12 @@
 import styles from "./Navbar.module.css";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../features/auth/authSlice";
 import { useState } from "react";
 
 const Navbar = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
   const [isActive, setIsActive] = useState(false);
 
@@ -13,6 +14,7 @@ const Navbar = () => {
     const confirmed = window.confirm("Are you sure you want to log out?");
     if (confirmed) {
       dispatch(logout());
+      navigate("/login");
     } else {
       e.preventDefault();
     }
@@ -22,7 +24,7 @@ const Navbar = () => {
     setIsActive((prev) => !prev);
   };
 
-  const closeMenu = () => setIsOpen(false);
+  const closeMenu = () => setIsActive(false);
 
   return (
     <nav className={styles.wrapper}>
@@ -79,16 +81,15 @@ const Navbar = () => {
             >
               Hello, {user.lastName}
             </NavLink>
-            <NavLink
-              to="/login"
+            <button
               onClick={(e) => {
                 handleLogout(e);
                 closeMenu();
               }}
-              className={styles.link}
+              className={`${styles.link} ${styles.logoutBtn}`}
             >
               Logout
-            </NavLink>
+            </button>
           </>
         ) : (
           <>

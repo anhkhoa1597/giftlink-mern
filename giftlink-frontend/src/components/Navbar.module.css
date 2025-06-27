@@ -101,6 +101,11 @@
   width: 100%;
 }
 
+.logoutBtn{
+  background: none;
+  border: none;
+}
+
 /* Profile link style */
 .profile {
   color: #333;

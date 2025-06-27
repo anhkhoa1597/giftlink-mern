@@ -7,7 +7,6 @@ const GiftCard = ({ gift }) => {
     e.target.onError = null;
     e.target.src = "/images/no-image.png";
   };
-  console.log("Rendering gift:", gift.name);
   return (
     <div key={gift.id} className={styles.card}>
       <img
