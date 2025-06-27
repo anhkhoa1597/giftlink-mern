@@ -1,15 +1,18 @@
-.nav {
+.wrapper {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  background-color: #ffffff;
+  background-color: #fff;
   border-bottom: 1px solid #eee;
   position: sticky;
   top: 0;
+  width: 100%;
+  box-sizing: border-box;
   z-index: 100;
 }
 
+/* Logo */
 .logo a {
   font-size: 1.8rem;
   font-weight: bold;
@@ -17,16 +20,57 @@
   text-decoration: none;
 }
 
+/* hamburgerBtn button */
+.hamburgerBtn {
+  font-size: 1.6rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  height: 30px;
+  width: 30px;
+  position: relative;
+  display: none; /* default invisible for large screen */
+}
+
+.hamburgerBtn span {
+  height: 5px;
+  width: 100%;
+  background-color: #0077cc;
+  border-radius: 25px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: 0.3s ease;
+}
+
+.hamburgerBtn span:nth-child(1) {
+  top: 25%;
+}
+
+.hamburgerBtn span:nth-child(3) {
+  top: 75%;
+}
+
+.hamburgerBtn.active span:nth-child(1) {
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.hamburgerBtn.active span:nth-child(2) {
+  opacity: 0;
+}
+.hamburgerBtn.active span:nth-child(3) {
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+/* Link container */
 .navLinks {
   display: flex;
   gap: 2rem;
 }
 
-.btnLogout {
-  border: none;
-  background: none;
-}
-
+/* Common link style */
 .link {
   font-size: 1.1rem;
   font-weight: bold;
@@ -57,25 +101,13 @@
   width: 100%;
 }
 
+/* Profile link style */
 .profile {
-  font-size: 1.1rem;
-  font-weight: bold;
   color: #333;
-  text-decoration: none;
-  padding: 0.5rem 0;
-  position: relative;
-  transition: color 0.2s ease;
 }
 
 .profile::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -2px;
-  width: 0%;
-  height: 2px;
   background-color: #333;
-  transition: width 0.3s ease;
 }
 
 .profile:hover {
@@ -83,10 +115,7 @@
   background-color: #f5f6f7;
 }
 
-.profile:hover::after {
-  width: 100%;
-}
-
+/* Active link style */
 .active {
   color: #0077cc;
   font-weight: 600;
@@ -94,4 +123,83 @@
 
 .active::after {
   width: 100%;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .wrapper {
+    align-items: flex-start;
+    padding: 1rem 1.25rem;
+  }
+
+  .hamburgerBtn {
+    display: block;
+  }
+
+  .navLinks {
+    /* background-color: #343749; */
+    position: absolute;
+    flex-direction: column;
+    width: 100%;
+    max-width: 200px;
+    max-height: 0;
+    overflow: hidden;
+    right: 0;
+    top: 100%;
+    justify-content: center;
+    align-items: start;
+    border: 1px solid #eee;
+    background-color: #fff;
+    transition: max-height 0.3s ease-in-out;
+  }
+
+  .navLinks .link {
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+
+  .navLinks .link:first-child {
+    margin-top: 1.5rem;
+  }
+
+  .navLinks .link:last-child {
+    margin-bottom: 1.5rem;
+  }
+
+  .open {
+    max-height: 800px;
+  }
+
+  .link,
+  .profile {
+    font-size: 1rem;
+    padding: 0.4rem 0;
+  }
+
+  .logo a {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .wrapper {
+    padding: 0.75rem 1rem;
+  }
+
+  .logo a {
+    font-size: 1.4rem;
+  }
+
+  .hamburgerBtn {
+    font-size: 1.4rem;
+  }
+
+  .navLinks {
+    gap: 0.75rem;
+  }
+
+  .link,
+  .profile {
+    font-size: 0.95rem;
+  }
 }

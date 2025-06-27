@@ -1,0 +1,12 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
+
+:root {
+  font-family: "Times New Roman", Times, serif;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}

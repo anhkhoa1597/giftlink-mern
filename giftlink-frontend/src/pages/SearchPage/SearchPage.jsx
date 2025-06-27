@@ -1,9 +1,12 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styles from "./SearchPage.module.css";
 import Pagination from "../../components/Pagination";
 import { fetchSearchGifts } from "../../features/search/searchSlice";
 import GiftCard from "../../components/GiftCard";
+
+const categories = ["Living", "Bedroom", "Bathroom", "Kitchen", "Office"];
+const conditions = ["New", "Like New", "Older"];
 
 const SearchPage = () => {
   const dispatch = useDispatch();
@@ -27,7 +30,6 @@ const SearchPage = () => {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    console.log("searching...");
     dispatch(
       fetchSearchGifts({
         query: { ...filters },
@@ -47,33 +49,49 @@ const SearchPage = () => {
 
   return (
     <div className={styles.container}>
-      <form className={styles.form} onSubmit={(e) => handleSearch(e)}>
+      <form className={styles.searchForm} onSubmit={handleSearch}>
         <fieldset>
           <legend>Filters</legend>
+
+          {/* Category dropdown */}
           <label htmlFor="category">
             Category
-            <input
-              type="text"
+            <select
               name="category"
               id="category"
               className={styles.textInp}
-              placeholder="e.g. book, toy"
               value={filters.category}
               onChange={handleChange}
-            />
+            >
+              <option value="">-- Select category --</option>
+              {categories.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
+              ))}
+            </select>
           </label>
+
+          {/* Condition dropdown */}
           <label htmlFor="condition">
             Condition
-            <input
-              type="text"
+            <select
               name="condition"
               id="condition"
               className={styles.textInp}
-              placeholder="e.g. new, used"
               value={filters.condition}
               onChange={handleChange}
-            />
+            >
+              <option value="">-- Select condition --</option>
+              {conditions.map((cond) => (
+                <option key={cond} value={cond}>
+                  {cond}
+                </option>
+              ))}
+            </select>
           </label>
+
+          {/* Age range */}
           <label htmlFor="age_years">
             Less than {filters.age_years} years
             <input
@@ -110,27 +128,23 @@ const SearchPage = () => {
       </form>
 
       <div className={styles.result}>
-        {status === "loading" && (
-          <p className={styles.loading}>Loading...</p>
-        )}
+        {status === "loading" && <p className={styles.loading}>Loading...</p>}
         {status === "failed" && <p className={styles.error}>{error.message}</p>}
         {status === "succeeded" && searchGifts.length === 0 && (
           <p className={styles.error}>No gifts found.</p>
         )}
         {status === "succeeded" &&
-          searchGifts.map((gift) => (
-            <GiftCard
-                gift={gift}
-                key={gift.id}
-            />
-          ))}
-
-        <Pagination
-          currentPage={page}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
-        />
+          searchGifts.map((gift) => <GiftCard gift={gift} key={gift.id} />)}
       </div>
+      {status === "succeeded" && searchGifts.length > 0 && (
+        <div className={styles.paginationWrapper}>
+          <Pagination
+            currentPage={page}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
+        </div>
+      )}
     </div>
   );
 };

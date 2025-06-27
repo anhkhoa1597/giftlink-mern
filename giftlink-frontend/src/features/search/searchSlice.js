@@ -3,17 +3,6 @@ import axios from "axios";
 import config from "../../config/config";
 import apiClient, { handleApi } from "../../api/apiClient";
 
-export const loginUser = createAsyncThunk(
-  "auth/loginUser",
-  (formData, { rejectWithValue }) => {
-    return handleApi(
-      () => apiClient.post(`/api/users/login`, formData),
-      rejectWithValue,
-      "Login failed"
-    );
-  }
-);
-
 export const fetchSearchGifts = createAsyncThunk(
   "gift/search",
   async ({ query, page = 1, limit = 12 }, { rejectWithValue }) => {

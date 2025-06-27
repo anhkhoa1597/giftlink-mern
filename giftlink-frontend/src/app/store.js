@@ -17,13 +17,13 @@ const authPersistConfig = {
 const giftPersistConfig = {
   key: "gift",
   storage,
-  whitelist: ["page"],
+  whitelist: ["gifts", "page", "totalPages", "total"],
 };
 
 const searchPersistConfig = {
   key: "search",
   storage,
-  whitelist: ["page"],
+  whitelist: ["page", "page", "totalPages", "total"],
 };
 
 const rootReducer = combineReducers({

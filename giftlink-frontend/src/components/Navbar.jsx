@@ -1,83 +1,115 @@
 import styles from "./Navbar.module.css";
-import { Link, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../features/auth/authSlice";
+import { useState } from "react";
 
 const Navbar = () => {
-  const location = useLocation();
-  const currentPath = location.pathname;
-  const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
+  const [isActive, setIsActive] = useState(false);
 
   const handleLogout = (e) => {
     const confirmed = window.confirm("Are you sure you want to log out?");
     if (confirmed) {
       dispatch(logout());
     } else {
-      e.preventDefault(); //
+      e.preventDefault();
     }
   };
+
+  const toggleMenu = () => {
+    setIsActive((prev) => !prev);
+  };
+
+  const closeMenu = () => setIsOpen(false);
+
   return (
-    <nav className={styles.nav}>
+    <nav className={styles.wrapper}>
       <div className={styles.logo}>
-        <Link to="/">🎁 GiftLink</Link>
+        <NavLink to="/" onClick={closeMenu}>
+          🎁 GiftLink
+        </NavLink>
       </div>
-      <div className={styles.navLinks}>
-        <Link
+
+      <div
+        className={`${styles.hamburgerBtn} ${isActive ? styles.active : ""}`}
+        onClick={toggleMenu}
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+      <div className={`${styles.navLinks} ${isActive ? styles.open : ""}`}>
+        <NavLink
           to="/"
-          className={`${styles.link} ${
-            currentPath === "/" ? styles.active : ""
-          }`}
+          onClick={closeMenu}
+          className={({ isActive }) =>
+            `${styles.link} ${isActive ? styles.active : ""}`
+          }
         >
           Home
-        </Link>
-        <Link
+        </NavLink>
+        <NavLink
           to="/main"
-          className={`${styles.link} ${
-            currentPath.startsWith("/main") ? styles.active : ""
-          }`}
+          onClick={closeMenu}
+          className={({ isActive }) =>
+            `${styles.link} ${isActive ? styles.active : ""}`
+          }
         >
           Gifts
-        </Link>
-        <Link
+        </NavLink>
+        <NavLink
           to="/search"
-          className={`${styles.link} ${
-            currentPath.startsWith("/search") ? styles.active : ""
-          }`}
+          onClick={closeMenu}
+          className={({ isActive }) =>
+            `${styles.link} ${isActive ? styles.active : ""}`
+          }
         >
           Search
-        </Link>
+        </NavLink>
+
         {user ? (
           <>
-            <Link to="/profile" className={`${styles.profile}`}>
+            <NavLink
+              to="/profile"
+              onClick={closeMenu}
+              className={`${styles.link} ${styles.profile}`}
+            >
               Hello, {user.lastName}
-            </Link>
-            <Link
+            </NavLink>
+            <NavLink
               to="/login"
-              className={`${styles.link}`}
-              onClick={(e) => handleLogout(e)}
+              onClick={(e) => {
+                handleLogout(e);
+                closeMenu();
+              }}
+              className={styles.link}
             >
               Logout
-            </Link>
+            </NavLink>
           </>
         ) : (
           <>
-            <Link
+            <NavLink
               to="/login"
-              className={`${styles.link} ${
-                currentPath.startsWith("/login") ? styles.active : ""
-              }`}
+              onClick={closeMenu}
+              className={({ isActive }) =>
+                `${styles.link} ${isActive ? styles.active : ""}`
+              }
             >
               Login
-            </Link>
-            <Link
+            </NavLink>
+            <NavLink
               to="/register"
-              className={`${styles.link} ${
-                currentPath.startsWith("/register") ? styles.active : ""
-              }`}
+              onClick={closeMenu}
+              className={({ isActive }) =>
+                `${styles.link} ${isActive ? styles.active : ""}`
+              }
             >
               Register
-            </Link>
+            </NavLink>
           </>
         )}
       </div>

@@ -13,8 +13,10 @@ const MainPage = () => {
   );
 
   useEffect(() => {
-    dispatch(fetchGifts({ page: 1, limit: config.giftsPerPage }));
-  }, [dispatch]);
+    if (gifts.length === 0 && status !== "loading") {
+      dispatch(fetchGifts({ page: 1, limit: config.giftsPerPage }));
+    }
+  }, [dispatch, gifts.length, status]);
 
   if (status === "loading")
     return <p className={styles.message}>Loading gifts...</p>;
@@ -22,6 +24,7 @@ const MainPage = () => {
 
   const handlePageChange = (newPage) => {
     dispatch(fetchGifts({ page: newPage, limit: config.giftsPerPage }));
+    window.scrollTo({ top: 0, behavior: "smooth" }); // 🆕
   };
 
   return (

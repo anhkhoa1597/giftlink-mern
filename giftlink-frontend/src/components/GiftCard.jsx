@@ -1,10 +1,13 @@
 import styles from "./GiftCard.module.css";
 import { Link } from "react-router-dom";
+import React from "react";
 
 const GiftCard = ({ gift }) => {
   const handleImageError = (e) => {
+    e.target.onError = null;
     e.target.src = "/images/no-image.png";
   };
+  console.log("Rendering gift:", gift.name);
   return (
     <div key={gift.id} className={styles.card}>
       <img
@@ -36,4 +39,4 @@ const GiftCard = ({ gift }) => {
   );
 };
 
-export default GiftCard;
+export default React.memo(GiftCard);

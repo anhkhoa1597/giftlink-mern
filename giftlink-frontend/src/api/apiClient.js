@@ -17,9 +17,7 @@ apiClient.interceptors.request.use((req) => {
 
 export const handleApi = async (axiosCall, rejectWithValue, optionReject) => {
   try {
-    console.log("calling api...");
     const res = await axiosCall();
-    console.log("data", res.data);
     return res.data;
   } catch (err) {
     const message = {

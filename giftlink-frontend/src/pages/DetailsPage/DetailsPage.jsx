@@ -32,6 +32,7 @@ const DetailsPage = () => {
     },
   ];
   useEffect(() => {
+    window.scrollTo(0, 0);
     if (id) dispatch(fetchGiftById(id));
   }, [id, dispatch]);
 
@@ -41,6 +42,7 @@ const DetailsPage = () => {
   if (!gift) return null;
 
   const handleImageError = (e) => {
+    e.target.onError = null;
     e.target.src = "/images/no-image.png";
   };
 
