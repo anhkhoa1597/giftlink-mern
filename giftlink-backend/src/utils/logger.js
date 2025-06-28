@@ -1,5 +1,5 @@
 import winston from "winston";
-const { combine, timestamp, printf, errors, colorize, label } = winston.format;
+const { combine, timestamp, printf, errors, colorize } = winston.format;
 
 // Create a custom format for the logger
 const logFormat = printf((info) => {

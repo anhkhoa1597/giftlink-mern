@@ -1,4 +1,6 @@
-import { NotFoundError } from "../middlewares/errorHandler.js";
+import {
+  NotFoundError,
+} from "../middlewares/errorHandler.js";
 import Gift from "../models/gift.js";
 import logger from "../utils/logger.js";
 
@@ -34,7 +36,7 @@ export const getPaginatedGifts = async (req, res, next) => {
     });
   } catch (err) {
     logger.error("Error", { stack: err.stack });
-    res.status(500).json({ error: "Server error" });
+    next(err);
   }
 };
 
@@ -54,14 +56,6 @@ export const getGiftById = async (req, res, next) => {
   }
 };
 
-export const addGift = async (req, res, next) => {
-  try {
-  } catch (error) {
-    logger.error("Error", { stack: error.stack });
-    next(error);
-  }
-};
-
 export const addManyGift = async (req, res, next) => {
   try {
     const { docs } = req.body;
@@ -74,22 +68,6 @@ export const addManyGift = async (req, res, next) => {
     } else {
       logger.error("Gifts already exist in DB");
     }
-  } catch (error) {
-    logger.error("Error", { stack: error.stack });
-    next(error);
-  }
-};
-
-export const updateGift = async (req, res, next) => {
-  try {
-  } catch (error) {
-    logger.error("Error", { stack: error.stack });
-    next(error);
-  }
-};
-
-export const deleteGift = async (req, res, next) => {
-  try {
   } catch (error) {
     logger.error("Error", { stack: error.stack });
     next(error);

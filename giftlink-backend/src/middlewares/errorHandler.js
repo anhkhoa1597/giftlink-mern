@@ -89,7 +89,7 @@ export const InternalServerError = createErrorSubclass(
 );
 
 // Centralized error handler middleware
-export const errorHandler = (err, req, res, next) => {
+export const errorHandler = (err, req, res) => {
   const isProduction = process.env.NODE_ENV === "production";
 
   if (!(err instanceof Error)) {

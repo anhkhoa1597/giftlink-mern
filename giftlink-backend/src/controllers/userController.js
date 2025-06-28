@@ -157,7 +157,10 @@ export const updateUserName = async (req, res, next) => {
       userId,
       lastName,
     });
-  } catch (error) {}
+  } catch (error) {
+    logger.error("Error updating user name", { stack: error.stack });
+    next(error);
+  }
 };
 
 // Update password
