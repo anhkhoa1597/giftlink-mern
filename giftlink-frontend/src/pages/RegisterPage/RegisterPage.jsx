@@ -51,8 +51,8 @@ const RegisterPage = () => {
       setSuccess("Register successfully! Redirecting...");
       navigate(from, { replace: true });
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error("Registration failed:", err);
-      // error sẽ được cập nhật trong slice → hiển thị bằng `error.message`
     }
   };
 

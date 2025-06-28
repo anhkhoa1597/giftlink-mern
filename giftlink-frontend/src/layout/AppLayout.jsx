@@ -6,7 +6,7 @@ import config from "../config/config";
 import axios from "axios";
 
 const AppLayout = () => {
-  const { token, user } = useSelector((state) => state.auth);
+  const { token } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
@@ -29,13 +29,15 @@ const AppLayout = () => {
       } catch (err) {
         dispatch(logout());
         navigate("/login");
+        // eslint-disable-next-line no-console
+        console.error("Authorization failed:", err);
       } finally {
         setLoading(false);
       }
     };
 
     verify();
-  }, [token]);
+  }, [token, dispatch, navigate]);
 
   if (loading) return <div>Checking Login...</div>;
 

@@ -1,5 +1,4 @@
 import styles from "./Pagination.module.css";
-import config from "../config/config";
 
 const Pagination = ({
   currentPage,

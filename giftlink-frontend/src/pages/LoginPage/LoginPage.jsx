@@ -34,6 +34,7 @@ const LoginPage = () => {
       setSuccess("Login successfully! Redirecting...");
       navigate(from, { replace: true });
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error("Login failed:", err);
     }
   };
