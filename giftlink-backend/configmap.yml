@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: giftapp-config
+data:
+  PORT: "3060"
+  MONGO_URI: "mongodb://mongodb-service:27017/giftdb"
+  NODE_ENV: "production"
+  FRONTEND_URL: "http://giftlink-frontend-service:5173"
+  CORS_ORIGIN: "http://giftlink-frontend-service:5173"
+  CORS_CREDENTIALS: "true"
+  CROSS_ORIGIN_RESOURCE_POLICY: "false"
+  HELMET_CROSS_ORIGIN_RESOURCE_POLICY: "false"
+  LOG_LEVEL: "info"
