@@ -1,11 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import apiClient, { handleApi } from "../../api/apiClient";
+import config from "../../config/config";
 
 export const registerUser = createAsyncThunk(
   "auth/registerUser",
   (formData, { rejectWithValue }) => {
     return handleApi(
-      () => apiClient.post(`/api/users/register`, formData),
+      () => apiClient.post(`${config.baseUrl}/api/users/register`, formData),
       rejectWithValue,
       "Register failed"
     );
@@ -16,7 +17,7 @@ export const loginUser = createAsyncThunk(
   "auth/loginUser",
   (formData, { rejectWithValue }) => {
     return handleApi(
-      () => apiClient.post(`/api/users/login`, formData),
+      () => apiClient.post(`${config.baseUrl}/api/users/login`, formData),
       rejectWithValue,
       "Login failed"
     );
@@ -30,7 +31,7 @@ export const updateUserName = createAsyncThunk(
     return handleApi(
       () =>
         apiClient.put(
-          `/api/users/update-user-name`,
+          `${config.baseUrl}/api/users/update-user-name`,
           {
             lastName: name,
           },
@@ -52,7 +53,7 @@ export const changePassword = createAsyncThunk(
     const { token } = getState().auth;
     return handleApi(
       () =>
-        apiClient.put(`/api/users/update-password`, formData, {
+        apiClient.put(`${config.baseUrl}/api/users/update-password`, formData, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
